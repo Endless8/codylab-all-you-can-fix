@@ -23,21 +23,22 @@ public class OrderConsumer {
     public void consumeOrderCreatedEvent(OrderDTO orderDTO) {
 
         log.info("Order created event received for order {}", orderDTO.id());
-        shippingApi.v1ApiShippingPost(orderMapper.toShippingClientDTO(orderDTO));
+        var orderId = shippingApi.v1ApiShippingPost(orderMapper.toShippingClientDTO(orderDTO));
+        orderService.updateStatus(orderId, "SHIPPING");
     }
 
-    @KafkaListener(topics = "order.shipping")
+    /*@KafkaListener(topics = "order.shipping")
     public void consumeOrderShippingEvent(JsonNode jsonNode) {
 
         long orderId = jsonNode.get("orderId")
                         .asLong();
         log.info("Shipping request received for order {}", orderId);
         orderService.updateStatus(orderId, "SHIPPING");
-    }
+    }*/
 
     @KafkaListener(topics = "order.shipped")
     public void consumeOrderShippedEvent(Long orderId) {
 
-        orderService.updateStatus(orderId, "SHIPPING");
+        orderService.updateStatus(orderId, "SHIPPED");
     }
 }

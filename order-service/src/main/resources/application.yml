@@ -22,7 +22,7 @@ spring:
     password: order_service
   docker:
     compose:
-      file: ./order-service/compose.yml
+      file: ./compose.yml
       start:
         skip: never
       readiness:

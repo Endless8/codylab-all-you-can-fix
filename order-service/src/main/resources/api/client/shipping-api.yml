@@ -13,14 +13,15 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/OrderDTO'
+              $ref: '#/components/schemas/ShippingDTO'
       responses:
         '200':
           description: Successful response
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/ShippingDTO'
+                type: integer
+                format: int64
 components:
   schemas:
     ShippingDTO:
@@ -29,6 +30,7 @@ components:
         - id
         - name
         - address
+        - orderId
       properties:
         id:
           type: integer
@@ -37,29 +39,6 @@ components:
           type: string
         address:
           type: string
-    OrderDTO:
-      type: object
-      required:
-        - id
-        - orderDate
-        - items
-        - status
-        - name
-        - address
-      properties:
-        id:
+        orderId:
           type: integer
           format: int64
-        orderDate:
-          type: string
-          format: date-time
-        items:
-          type: array
-          items:
-            type: string
-        status:
-          type: string
-        name:
-          type: string
-        address:
-          type: string
