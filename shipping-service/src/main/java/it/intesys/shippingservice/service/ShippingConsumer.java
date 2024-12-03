@@ -30,7 +30,7 @@ public class ShippingConsumer {
         TrackingDTO trackingDTO = shippingProviderApi.delegateShipping(shippingMapper.toShippingProviderClientDTO(shipping));
         log.info("Shipping done for order {} tracking number is {}", jsonNode.get("orderId")
                         .asLong(), trackingDTO.getTrackingNumber());
-        shippingService.updateTrackingInfo(shipping.getOrderId(), trackingDTO);
+        shippingService.updateTrackingInfo(shipping.getId(), trackingDTO);
     }
 
 }

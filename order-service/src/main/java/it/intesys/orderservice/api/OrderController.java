@@ -1,16 +1,15 @@
 package it.intesys.orderservice.api;
 
 import io.swagger.v3.oas.annotations.Operation;
-import it.intesys.orderservice.dto.OrderDTO;
 import it.intesys.orderservice.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
-import java.util.stream.IntStream;
-
-import static it.intesys.orderservice.dto.OrderDTOFactory.*;
+import static it.intesys.orderservice.dto.OrderDTOFactory.createOrderDTO;
+import static it.intesys.orderservice.dto.OrderDTOFactory.createOrderDTOList;
 
 /**
  * REST controller for handling order-related HTTP requests.
@@ -41,6 +40,6 @@ public class OrderController {
     @GetMapping("/api/orders/bulk") // Fixed typo on path
     @Operation(summary = "Places a thousand new orders")
     public void bulkSave() {
-        createOrderDTOList().stream().parallel().forEach(orderService::save);
+        createOrderDTOList().forEach(orderService::save); // Fix bug that was creating duplicate shipping for the same order
     }
 }

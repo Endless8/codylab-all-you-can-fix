@@ -1,12 +1,10 @@
 package it.intesys.shippingservice.mapper;
 
 
-import com.fasterxml.jackson.databind.JsonNode;
 import it.intesys.shippingservice.dto.ShippingDTO;
 import it.intesys.shippingservice.entity.Shipping;
-
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org.openapitools.jackson.nullable.JsonNullable;
 
 @Mapper(componentModel = "spring")
 public interface ShippingMapper {
@@ -15,5 +13,10 @@ public interface ShippingMapper {
 
     it.intesys.shippingservice.client.model.ShippingDTO toShippingProviderClientDTO(Shipping shipping);
 
-    ShippingDTO toShippingDTO(it.intesys.shippingservice.api.model.ShippingDTO shippingDTO);
+    ShippingDTO toShippingDTO(it.intesys.shippingservice.api.model.ShippingDTO shippingDTO); // Add correct mapping
+
+    // Dto id null value handling
+    default Long map(JsonNullable<Long> value) {
+        return value != null && value.isPresent() ? value.get() : null;
+    }
 }

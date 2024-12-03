@@ -2,8 +2,8 @@ package it.intesys.orderservice.entity;
 
 public enum OrderStatus {
     CREATED("CREATED"),
-    SHIPPING("SHIIPPING"),
-    SHIPPED("SHIPED");
+    SHIPPING("SHIPPING"), // Typo fix
+    SHIPPED("SHIPPED");
 
     private final String value;
 

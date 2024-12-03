@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @AllArgsConstructor
-@Transactional
+@Transactional // Bug fix for readonly transactions
 @Slf4j
 public class OrderService {
 
@@ -28,10 +28,16 @@ public class OrderService {
 
     public Long save(OrderDTO orderDTO) {
 
-        Order order = orderMapper.toEntity(orderDTO);
-        order = orderRepository.save(order);
-        log.info("Order {} placed", order.getId());
-        orderProducer.publishOrderCreatedEvent(orderMapper.toDTO(order));
-        return order.getId();
+        var orderOptional = orderRepository.findById(orderDTO.id());
+        if (orderOptional.isEmpty()) { // Fix bug that was overwriting existing orders
+            Order order = orderMapper.toEntity(orderDTO);
+            order = orderRepository.save(order);
+            log.info("Order {} placed", order.getId());
+            orderProducer.publishOrderCreatedEvent(orderMapper.toDTO(order));
+            return order.getId();
+        } else {
+            log.warn("Order already existing with id: {}", orderDTO.id());
+            return orderDTO.id();
+        }
     }
 }
